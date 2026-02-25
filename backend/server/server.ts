@@ -14,7 +14,7 @@ interface StoredUser {
 }
 
 let users: StoredUser[] = [];
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production";
+const JWT_SECRET = process.env.JWT_SECRET || "key";
 
 // Register
 router.post("/register", async (req: Request, res: Response) => {
