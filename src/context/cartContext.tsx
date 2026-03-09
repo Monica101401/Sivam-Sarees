@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export interface CartItem {
   id: number;
@@ -23,15 +23,23 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: { children: React.ReactNode }) {
+interface CartProviderProps {
+  children: ReactNode;
+}
+
+export function CartProvider({ children }: CartProviderProps) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-      setItems(JSON.parse(savedCart));
+    try {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        setItems(JSON.parse(savedCart));
+      }
+    } catch (error) {
+      console.error('Error loading cart:', error);
     }
     setIsLoaded(true);
   }, []);
@@ -39,7 +47,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   // Save cart to localStorage whenever it changes
   useEffect(() => {
     if (isLoaded) {
-      localStorage.setItem('cart', JSON.stringify(items));
+      try {
+        localStorage.setItem('cart', JSON.stringify(items));
+      } catch (error) {
+        console.error('Error saving cart:', error);
+      }
     }
   }, [items, isLoaded]);
 

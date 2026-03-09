@@ -9,13 +9,11 @@ export const metadata: Metadata = {
   description: "Shop beautiful salwaar suits online",
 };
 
-type RootLayoutProps = {
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
-};
-
-export default function RootLayout(props: RootLayoutProps) {
-  const { children } = props;
-
+}) {
   return (
     <html lang="en">
       <body>
