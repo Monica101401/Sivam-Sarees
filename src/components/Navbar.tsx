@@ -1,48 +1,9 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-
-// Safely import hooks
-let useAuth: any = null;
-let useCart: any = null;
-
-try {
-  const authModule = require('@/context/AuthContext');
-  useAuth = authModule.useAuth;
-} catch (error) {
-  console.error('AuthContext not found');
-}
-
-try {
-  const cartModule = require('@/context/CartContext');
-  useCart = cartModule.useCart;
-} catch (error) {
-  console.error('CartContext not found');
-}
+import { useCart } from '@/context/cartContext';
 
 export default function Navbar() {
-  let isAuthenticated = false;
-  let user = null;
-  let logout = null;
-  let totalItems = 0;
-
-  // Safely use hooks
-  if (useAuth) {
-    const authContext = useAuth();
-    isAuthenticated = authContext?.isAuthenticated ?? false;
-    user = authContext?.user ?? null;
-    logout = authContext?.logout ?? null;
-  }
-
-  if (useCart) {
-    const cartContext = useCart();
-    totalItems = cartContext?.totalItems ?? 0;
-  }
-
-  const handleLogout = () => {
-    if (logout) logout();
-  };
+  const { totalItems } = useCart();
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
@@ -94,41 +55,21 @@ export default function Navbar() {
               </button>
             </Link>
 
-            {/* Auth Section */}
-            {isAuthenticated ? (
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/profile"
-                  className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
-                >
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                    {user?.name?.charAt(0)?.toUpperCase() ?? 'U'}
-                  </div>
-                  <span className="hidden sm:inline text-sm font-medium">{user?.name}</span>
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 text-gray-700 hover:text-red-600 transition-colors font-medium text-sm"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="flex gap-2">
-                <Link
-                  href="/login"
-                  className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded transition-colors font-medium text-sm"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-medium text-sm"
-                >
-                  Sign Up
-                </Link>
-              </div>
-            )}
+            {/* Auth Section - Just show buttons for now */}
+            <div className="flex gap-2">
+              <Link
+                href="/login"
+                className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded transition-colors font-medium text-sm"
+              >
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors font-medium text-sm"
+              >
+                Sign Up
+              </Link>
+            </div>
           </div>
         </div>
       </div>

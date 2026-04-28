@@ -1,28 +1,17 @@
-import type { Metadata } from "next";
-import { CartProvider } from "@/context/cartContext";
-import { AuthProvider } from "@/context/AuthContext";
-import Navbar from "@/components/Navbar";
-import "./globals.css";
+'use client';
 
-export const metadata: Metadata = {
-  title: "Salwaar - E-commerce Store",
-  description: "Shop beautiful salwaar suits online",
-};
+import { CartProvider } from '@/context/cartContext';
+import Navbar from '@/components/Navbar';
+import './globals.css';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          <CartProvider>
-            <Navbar />
-            {children}
-          </CartProvider>
-        </AuthProvider>
+        <CartProvider>
+          <Navbar />
+          {children}
+        </CartProvider>
       </body>
     </html>
   );
